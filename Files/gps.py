@@ -12,6 +12,7 @@ import pynmea2
 import socket
 import sys
 import os
+import time
 print('adsf')
 
 
@@ -27,6 +28,7 @@ def init_gps():
 
 def start_deamon():
     os.system('sudo service gpsd start')
+    print('RCU Test: Start Deamon')
     #os.system('sudo service gpsd status')
 
 """
@@ -39,13 +41,37 @@ with serial.Serial('/dev/ttyUSB2', baudrate=9600, timeout=5) as ser:
 """
 
 
-gps_server = socket.Socket(socket.AF_INET, SOCK_STREAM)
-gps_server.connect(('127.0.0.0', 2947))
 
 def connect_gps():
+    print('connect to GPS')
+    gps_server = socket.Socket(socket.AF_INET, SOCK_STREAM)
+    gps_server.connect(('127.0.0.0', 2947))
     try:
         while True:
             cord = s.recv(1024)
             print(cord)
+            try:
+
+                cord = pynmea2.parse(cord)
+                print(cord)
+                num_sat = cord.num_sats
+                print(num_sat)
+                latitude = cord.latitude
+                print(latitude)
+                longitude = cord.longitude
+                print(longitude)
+                altitude_units = cord.altitude_units
+                print(altitude_units)
+
+            except pynmea2.ParseError as e:
+                print('Parse error: {}'.format(e))
+                continue
     finally:
         gps_server.close()
+
+if name == '__main__':
+    init_gps()
+    start_deamon()
+    print('Wait 5 Sec')
+    time.sleep(5)
+    connect_gps()
