@@ -19,12 +19,12 @@ print('adsf')
 def init_gps():
     with serial.Serial('/dev/ttyUSB3', baudrate=9600, timeout=5) as ser:
         print('Succesfully Connected to ttyUSB3')
-        ser.write('AT$GPSP=1')
+        ser.write(b'AT$GPSP=1\r')
         print('GPS Power on')
-        ser.write('AT$GPSAT=1')
-        print('GPS power on')
-        ser.write('AT$GPSNMUN=0,1,1,1,1,1,1')
-        print('GPS output format')
+        ser.write(b'AT$GPSAT=1\r')
+        print(b'GPS power on')
+        ser.write(b'AT$GPSNMUN=0,1,1,1,1,1,1\r')
+        print(b'GPS output format\r')
 
 def start_deamon():
     os.system('sudo service gpsd start')
@@ -74,4 +74,3 @@ if __name__ == '__main__':
     start_deamon()
     print('Wait 5 Sec')
     time.sleep(5)
-    connect_gps()
