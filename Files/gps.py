@@ -7,6 +7,8 @@
 # Libs
 import serial
 import pynmea2
+import gpsd
+from gpsdclient import GPSDClient
 
 # Built-in/Generic Imports
 import socket
@@ -32,49 +34,25 @@ def start_deamon():
     print('RCU Test: Start Deamon')
     #os.system('sudo service gpsd status')
 
-"""
-with serial.Serial('/dev/ttyUSB2', baudrate=9600, timeout=5) as ser:
-    print('Succesfully Connected to ttyUSB2')
-    # read 10 lines from the serial output
-    for i in range(10):
-        line = ser.readline().decode('ascii', errors='replace')
-        print(line.strip())
-"""
-
-
 
 def connect_gps():
-    print('connect to GPS')
-    gps_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    gps_server.connect(('127.0.0.1', 2947))
-    try:
-        while True:
-            print('read data')
-            bCoordinaten = gps_server.recv(1024)
-            sCoordinaten = bCoordinaten.decode()
-            print(sCoordinaten)
-            try:
+    gpsd.connect()
+    gpsd.connect(host="127.0.0.1", port=2947)
+    packet = gpsd.get_current()
+    print(packet.position())
 
-                cord = pynmea2.parse(sCoordinaten)
-                print(cord)
-                num_sat = cord.num_sats
-                print(num_sat)
-                latitude = cord.latitude
-                print(latitude)
-                longitude = cord.longitude
-                print(longitude)
-                altitude_units = cord.altitude_units
-                print(altitude_units)
 
-            except pynmea2.ParseError as e:
-                print('Parse error: {}'.format(e))
-                continue
-    finally:
-        gps_server.close()
+def connect_gps_client():
+    client = GPSDClient(host="127.0.0.1")
+    for result in client.dict_stream(convert_datetime=True):
+        if result["class"] == "TPV":
+            print("Latitude: %s" % result.get("lat", "n/a"))
+            print("Longitude: %s" % result.get("lon", "n/a"))
+            print("Speed: %s" % result.get("speed", "n/a"))
+            print("Time: %s" % result.get("time", "n/a"))
+
 
 if __name__ == '__main__':
     init_gps()
     start_deamon()
-    #print('Wait 5 Sec')
-    #time.sleep(5)
     connect_gps()
