@@ -48,11 +48,12 @@ def connect_gps():
     gps_server.connect(('127.0.0.1', 2947))
     try:
         while True:
-            cord = s.recv(1024)
-            print(cord)
+            bCoordinaten = gps_server.recv(1024)
+            sCoordinaten = bCoordinaten.decode()
+            print(sCoordinaten)
             try:
 
-                cord = pynmea2.parse(cord)
+                cord = pynmea2.parse(sCoordinaten)
                 print(cord)
                 num_sat = cord.num_sats
                 print(num_sat)
@@ -72,6 +73,6 @@ def connect_gps():
 if __name__ == '__main__':
     init_gps()
     start_deamon()
-    print('Wait 5 Sec')
-    time.sleep(5)
+    #print('Wait 5 Sec')
+    #time.sleep(5)
     connect_gps()
