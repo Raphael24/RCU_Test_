@@ -45,7 +45,7 @@ with serial.Serial('/dev/ttyUSB2', baudrate=9600, timeout=5) as ser:
 def connect_gps():
     print('connect to GPS')
     gps_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    gps_server.connect(('127.0.0.0', 2947))
+    gps_server.connect(('127.0.0.1', 2947))
     try:
         while True:
             cord = s.recv(1024)
@@ -70,8 +70,8 @@ def connect_gps():
         gps_server.close()
 
 if __name__ == '__main__':
-    #init_gps()
-    #start_deamon()
-    #print('Wait 5 Sec')
+    init_gps()
+    start_deamon()
+    print('Wait 5 Sec')
     time.sleep(5)
     connect_gps()
