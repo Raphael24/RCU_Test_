@@ -20,11 +20,12 @@ def init_gps():
     with serial.Serial('/dev/ttyUSB3', baudrate=9600, timeout=5) as ser:
         print('Succesfully Connected to ttyUSB3')
         ser.write(b'AT$GPSP=1\r')
-        print('GPS Power on')
+        print('GPS Ein')
         ser.write(b'AT$GPSAT=1\r')
-        print(b'GPS power on')
+        print('GPS Power Ein')
         ser.write(b'AT$GPSNMUN=0,1,1,1,1,1,1\r')
-        print(b'GPS output format\r')
+        print('GPS set output format\r')
+        ser.close()
 
 def start_deamon():
     os.system('sudo service gpsd start')
@@ -48,6 +49,7 @@ def connect_gps():
     gps_server.connect(('127.0.0.1', 2947))
     try:
         while True:
+            print('read data')
             bCoordinaten = gps_server.recv(1024)
             sCoordinaten = bCoordinaten.decode()
             print(sCoordinaten)
