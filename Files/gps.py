@@ -69,7 +69,7 @@ def connect_gps():
     finally:
         gps_server.close()
 
-if name == '__main__':
+if __name__ == '__main__':
     init_gps()
     start_deamon()
     print('Wait 5 Sec')
