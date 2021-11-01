@@ -45,12 +45,27 @@ def connect_gps():
 
 def connect_gps_client():
     client = GPSDClient(host="127.0.0.1")
-    for result in client.dict_stream(convert_datetime=True):
-        if result["class"] == "TPV":
-            print("Latitude: %s" % result.get("lat", "n/a"),
-            "Longitude: %s" % result.get("lon", "n/a"),
-            "Speed: %s" % result.get("speed", "n/a"),
-            "Time: %s" % result.get("time", "n/a"))
+    test_beenden = False
+    while test_beenden != True:
+        for result in client.dict_stream(convert_datetime=True):
+            if result["class"] == "TPV":
+                print("Latitude: %s" % result.get("lat", "n/a"),
+                "Longitude: %s" % result.get("lon", "n/a"),
+                "Speed: %s" % result.get("speed", "n/a"),
+                "Time: %s" % result.get("time", "n/a"))
+
+                latitude = result.get("lat")
+                longitude = result.get("lon")
+
+                if type(latitude) != type(None) and type(longitude) != type(None):
+                    print('Daten Valid')
+                    if latitude != 0.0 and longitude != 0.0:
+                        print('Standort gefunden -> Test wird beendet')
+                        test_beenden = True
+
+                    else:
+                        print('Daten nicht gültig -> warten bis gps initialisiert ist.')
+
 
 
 if __name__ == '__main__':
