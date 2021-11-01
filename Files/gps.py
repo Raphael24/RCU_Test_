@@ -3,6 +3,7 @@
 
 #NMEA stream auslesen
 #https://fishandwhistle.net/post/2016/using-pyserial-pynmea2-and-raspberry-pi-to-log-nmea-output/
+#https://github.com/tfeldmann/gpsdclient
 
 # Libs
 import serial
@@ -15,7 +16,7 @@ import socket
 import sys
 import os
 import time
-print('adsf')
+print('Start GPS Test')
 
 
 def init_gps():
@@ -46,13 +47,13 @@ def connect_gps_client():
     client = GPSDClient(host="127.0.0.1")
     for result in client.dict_stream(convert_datetime=True):
         if result["class"] == "TPV":
-            print("Latitude: %s" % result.get("lat", "n/a"))
-            print("Longitude: %s" % result.get("lon", "n/a"))
-            print("Speed: %s" % result.get("speed", "n/a"))
-            print("Time: %s" % result.get("time", "n/a"))
+            print("Latitude: %s" % result.get("lat", "n/a"),
+            "Longitude: %s" % result.get("lon", "n/a"),
+            "Speed: %s" % result.get("speed", "n/a"),
+            "Time: %s" % result.get("time", "n/a"))
 
 
 if __name__ == '__main__':
     init_gps()
     start_deamon()
-    connect_gps()
+    connect_gps_client()
