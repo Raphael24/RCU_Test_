@@ -32,6 +32,7 @@ Test_result = {
 }
 
 def init_gps():
+    print("----- Init GPS -----\n")
     with serial.Serial('/dev/ttyUSB3', baudrate=9600, timeout=5) as ser:
         print('Succesfully Connected to ttyUSB3')
         ser.write(b'AT$GPSP=1\r')
@@ -44,9 +45,8 @@ def init_gps():
 
 def start_deamon():
     os.system('sudo service gpsd start')
-    print('RCU Test: Start Deamon')
+    print('RCU Test: Start Deamon\n')
     #os.system('sudo service gpsd status')
-
 
 def connect_gps_client():
     print("----- Start GPS test -----\n")
@@ -96,23 +96,23 @@ def check_ping():
         print('URL fail: No connection -> Check sim and repeat test\n')
         Test_result["GSM"] = "Not OK"
 
-
 def memory_test():
     print("----- Start memory test -----")
     #os.system('sudo hdparm -t /dev/sda')
     cmd = os.popen('sudo hdparm -t /dev/sda')
     Test_result["Memory"] = cmd[2]
 
-
 def show_macaddr():
-    print("----- Show MAC-Adresse -----")
+    print("----- MAC-Adresse -----\n")
     os.system('ip -brief link')
     a = os.popen('ip -brief link')
+    pribt("\n")
+    """
     for i in a:
         c = 0
         Test_result.update({ c : i })
         c += 1
-
+    """
 
 def get_result():
     print("----- Start Test Result -----\n")
@@ -121,11 +121,11 @@ def get_result():
     print("----- End Test Result -----\n")
 
 
-
 if __name__ == '__main__':
     init_gps()
     start_deamon()
     connect_gps_client()
     check_ping()
     show_macaddr()
+    memory_test()
     get_result()
