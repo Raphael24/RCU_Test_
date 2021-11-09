@@ -23,15 +23,15 @@ print('Start GPS Test')
 # Variablen
 
 Test_result = {
-            "MAC_Adresse" : "",
-            "Latitude" : "",
-            "Longitude" : "",
-            "Speed" : "",
-            "Time" : "",
-            "GSM" : "",
-            "ETH1" : "",
-            "ETH2" : "",
-            "Memory" : "",
+            "MAC_Adresse" : "NOK",
+            "Latitude" : "NOK",
+            "Longitude" : "NOK",
+            "Speed" : "NOK",
+            "Time" : "NOK",
+            "GSM" : "NOK",
+            "ETH1" : "NOK",
+            "ETH2" : "NOK",
+            "Memory" : "NOK",
 }
 
 def init_gps():
@@ -76,6 +76,7 @@ def connect_gps_client():
                         Test_result["Speed"] = str(result.get("speed"))
                         Test_result["Time"] = str(result.get("time"))
                         print('Standort gefunden -> Test wird beendet')
+                        print(Test_result)
                         test_beenden = True
 
                         break
