@@ -22,7 +22,7 @@ print('Start GPS Test')
 
 # Variablen
 
-result = {
+Test_result = {
             "MAC_Adresse" : "",
             "Latitude" : "",
             "Longitude" : "",
@@ -71,12 +71,12 @@ def connect_gps_client():
                     print('Daten sind gültig')
 
                     if latitude != 0.0 and longitude != 0.0:
+                        Test_result["Latitude"] = str(latitude)
+                        Test_result["Longitude"] = str(longitude)
+                        Test_result["Speed"] = str(result.get("speed"))
+                        Test_result["Time"] = str(result.get("time"))
                         print('Standort gefunden -> Test wird beendet')
                         test_beenden = True
-                        result["Latitude"] = str(latitude)
-                        result["Longitude"] = str(longitude)
-                        result["Speed"] = str(result.get("speed"))
-                        result["Time"] = str(result.get("time"))
 
                         break
 
@@ -96,17 +96,18 @@ def check_ping():
         time.sleep(5)
         #os.system('sudo cmd .') -> überprüfen
         print('Ping OK')
-        result["GSM"] = "OK"
+        Test_result["GSM"] = "OK"
         print('Test finished')
     except:
         print('URL fail: No connection -> Check sim and repeat test')
+        Test_result["GSM"] = "Not OK"
 
 
 def memory_test():
     print("----- Start memory test -----")
     #os.system('sudo hdparm -t /dev/sda')
     cmd = os.popen('sudo hdparm -t /dev/sda')
-    result["Memory"] = cmd[2]
+    Test_result["Memory"] = cmd[2]
 
 
 def show_macaddr():
@@ -114,14 +115,14 @@ def show_macaddr():
     os.system('ip -brief link')
 
 def get_result():
-    for i in result:
-        print(i)
+    for i in Test_result:
+        print(i, ":", Test_result[i])
 
 
 
 if __name__ == '__main__':
     init_gps()
     start_deamon()
-    connect_gps_client()
+    #connect_gps_client()
     check_ping()
     get_result()
