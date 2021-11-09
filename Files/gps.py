@@ -17,13 +17,10 @@ import sys
 import os
 import time
 import urllib.request
-print('Start GPS Test')
-
 
 # Variablen
 
 Test_result = {
-            "MAC_Adresse" : "NOK",
             "Latitude" : "NOK",
             "Longitude" : "NOK",
             "Speed" : "NOK",
@@ -52,7 +49,7 @@ def start_deamon():
 
 
 def connect_gps_client():
-    print("----- Start GPS test -----")
+    print("----- Start GPS test -----\n")
     client = GPSDClient(host="127.0.0.1")
     test_beenden = False
 
@@ -75,8 +72,8 @@ def connect_gps_client():
                         Test_result["Longitude"] = str(longitude)
                         Test_result["Speed"] = str(result.get("speed"))
                         Test_result["Time"] = str(result.get("time"))
-                        print('Standort gefunden -> Test wird beendet')
-                        print(Test_result)
+                        print('Standort gefunden -> Test wird beendet\n')
+                        #print(Test_result, "\n")
                         test_beenden = True
 
                         break
@@ -89,18 +86,14 @@ def connect_gps_client():
 
 
 def check_ping():
-    print("----- Start ping -----")
+    print("----- Start Ping -----")
     try:
         urllib.request.open('https://www.stadlerrail.com/de/')
         print('URL OK')
-        os.system('ping stadlerrail.com')
-        time.sleep(5)
-        #os.system('sudo cmd .') -> überprüfen
-        print('Ping OK')
         Test_result["GSM"] = "OK"
-        print('Test finished')
+        print('Test finished\n')
     except:
-        print('URL fail: No connection -> Check sim and repeat test')
+        print('URL fail: No connection -> Check sim and repeat test\n')
         Test_result["GSM"] = "Not OK"
 
 
@@ -116,16 +109,16 @@ def show_macaddr():
     os.system('ip -brief link')
     a = os.popen('ip -brief link')
     for i in a:
-        a = 0
-        Test_result.append({ a : i })
-        a += 1
+        c = 0
+        Test_result.update({ c : i })
+        c += 1
 
 
 def get_result():
-    print("----- Start Test Result -----")
+    print("----- Start Test Result -----\n")
     for i in Test_result:
         print(i, ":", Test_result[i])
-    print("----- End Test Result -----")
+    print("----- End Test Result -----\n")
 
 
 
@@ -134,4 +127,5 @@ if __name__ == '__main__':
     start_deamon()
     connect_gps_client()
     check_ping()
+    show_macaddr()
     get_result()
