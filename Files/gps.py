@@ -114,16 +114,24 @@ def memory_test():
 def show_macaddr():
     print("----- Show MAC-Adresse -----")
     os.system('ip -brief link')
+    a = os.popen('ip -brief link')
+    for i in a:
+        a = 0
+        Test_result.append({ a : i })
+        a += 1
+
 
 def get_result():
+    print("----- Start Test Result -----")
     for i in Test_result:
         print(i, ":", Test_result[i])
+    print("----- End Test Result -----")
 
 
 
 if __name__ == '__main__':
     init_gps()
     start_deamon()
-    #connect_gps_client()
+    connect_gps_client()
     check_ping()
     get_result()
