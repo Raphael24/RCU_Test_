@@ -1,12 +1,14 @@
 import socket
 import time
 
+def test_client():
+    print('test client')
 
 def ETH_client():
     print('Client Init')
-    ip = "172.17.120.59"
+    ip = "192.168.2.101"
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, 50021))
+    s.connect((ip, 50001))
     try:
         while True:
             nachricht = "works"
