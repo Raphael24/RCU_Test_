@@ -22,11 +22,10 @@ def ETH_server():
                 if not data:
                     komm.close()
                     break
+
                 print("[{}] {}".format(addr[0], data.decode()))
                 komm.send(data)
+                s.close()
 
     finally:
         s.close()
-
-if __name__ == '__main__':
-    ETH_server()

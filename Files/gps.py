@@ -49,7 +49,6 @@ class test_client(threading.Thread):
         #print(ETH1)
         #print(ETH2)
         Test_result.update({"ETH1": ETH1, "ETH2": ETH2})
-        print(ETH_Test)
 
 
 WServer = test_server()
@@ -154,4 +153,6 @@ if __name__ == '__main__':
     #print('Server online')
     WClient.start()
     #print('Client online')
+    WServer.join()
+    WClient.join()
     get_result()

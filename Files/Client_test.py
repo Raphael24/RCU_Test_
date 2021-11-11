@@ -26,6 +26,3 @@ def ETH_client(ip):
                 break
     finally:
         s.close()
-
-if __name__ == '__main__':
-    ETH_client()
