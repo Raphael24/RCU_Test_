@@ -10,6 +10,9 @@ import serial
 import pynmea2
 import gpsd
 from gpsdclient import GPSDClient
+import threading
+import Server_test
+import Client_test
 
 # Built-in/Generic Imports
 import socket
@@ -30,6 +33,28 @@ Test_result = {
             "ETH2" : "NOK",
             "Memory" : "NOK",
 }
+
+
+class test_server(threading.Thread):
+    def run(self):
+        print('MAIN: Run Server')
+        Server_test.ETH_server()
+
+
+class test_client(threading.Thread):
+    def run(self):
+        print('MAIN: Run Client')
+        ETH1 = Client_test.ETH_client(ip="172.17.68.87")  # "192.168.2.101"
+        ETH2 = Client_test.ETH_client(ip="172.17.68.87")  # "192.168.2.102"
+        #print(ETH1)
+        #print(ETH2)
+        Test_result.update({"ETH1": ETH1, "ETH2": ETH2})
+        print(ETH_Test)
+
+
+WServer = test_server()
+WClient = test_client()
+
 
 def init_gps():
     print("----- Init GPS -----\n")
@@ -88,13 +113,12 @@ def connect_gps_client():
 def check_ping():
     print("----- Start Ping -----")
     try:
-        urllib.request.open('https://www.stadlerrail.com/de/')
-        print('URL OK')
+        urllib.request.urlopen('https://www.stadlerrail.com')
+        print('URL OK:  [https://www.stadlerrail.com]')
         Test_result["GSM"] = "OK"
-        print('Test finished\n')
     except:
         print('URL fail: No connection -> Check sim and repeat test\n')
-        Test_result["GSM"] = "Not OK"
+        Test_result["GSM"] = "NOT OK"
 
 def memory_test():
     print("----- Start memory test -----")
@@ -126,3 +150,9 @@ if __name__ == '__main__':
     show_macaddr()
     memory_test()
     get_result()
+    #print('Start ETH-Test')
+    WServer.start()
+    #print('Server online')
+    WClient.start()
+    #print('Client online')
+
