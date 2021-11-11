@@ -5,7 +5,7 @@ def test_client():
     print('test client')
 
 def ETH_client(ip):
-    print('Client Init')
+    #print('Client Init')
     #ip = "192.168.2.101"
     ip = ip
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

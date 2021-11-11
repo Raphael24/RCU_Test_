@@ -9,14 +9,16 @@ def test_server():
 
 
 def ETH_server():
-    print('Server Init')
+    #print('Server Init')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(("", 50001))
     s.listen(1)
     try:
-        while True:
+        l = 0
+        while l > 2:
             print("Server waiting")
             komm, addr = s.accept()
+            l += 1
             while True:
                 data = komm.recv(1024)
                 if not data:
@@ -25,7 +27,6 @@ def ETH_server():
 
                 print("[{}] {}".format(addr[0], data.decode()))
                 komm.send(data)
-                s.close()
 
     finally:
         s.close()
