@@ -100,19 +100,16 @@ def memory_test():
     print("----- Start memory test -----")
     #os.system('sudo hdparm -t /dev/sda')
     cmd = os.popen('sudo hdparm -t /dev/sda')
-    Test_result["Memory"] = cmd[2]
+    for i in cmd:
+        print(i)
+        Test_result.update({"Memory" : i })
 
 def show_macaddr():
     print("----- MAC-Adresse -----\n")
     os.system('ip -brief link')
     a = os.popen('ip -brief link')
-    pribt("\n")
-    """
-    for i in a:
-        c = 0
-        Test_result.update({ c : i })
-        c += 1
-    """
+    print("\n")
+
 
 def get_result():
     print("----- Start Test Result -----\n")
