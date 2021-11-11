@@ -44,8 +44,8 @@ class test_server(threading.Thread):
 class test_client(threading.Thread):
     def run(self):
         print('MAIN: Run Client')
-        ETH1 = Client_test.ETH_client(ip="172.17.68.87")  # "192.168.2.101"
-        ETH2 = Client_test.ETH_client(ip="172.17.68.87")  # "192.168.2.102"
+        ETH1 = Client_test.ETH_client(ip="192.168.2.101")  # "192.168.2.101"
+        ETH2 = Client_test.ETH_client(ip="192.168.2.102")  # "192.168.2.102"
         #print(ETH1)
         #print(ETH2)
         Test_result.update({"ETH1": ETH1, "ETH2": ETH2})
@@ -149,10 +149,9 @@ if __name__ == '__main__':
     check_ping()
     show_macaddr()
     memory_test()
-    get_result()
     #print('Start ETH-Test')
     WServer.start()
     #print('Server online')
     WClient.start()
     #print('Client online')
-
+    get_result()
